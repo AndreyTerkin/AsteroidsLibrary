@@ -7,7 +7,7 @@ using AsteroidsLibrary.SpaceObjects;
 
 namespace AsteroidsLibrary.Movers
 {
-    class MoverRelativeNearestObject : IMovable
+    public class MoverRelativeNearestObject : IMovable
     {
         private Type aimType;
         private float speed;
@@ -27,7 +27,8 @@ namespace AsteroidsLibrary.Movers
 
         public Vector3 UpdatePosition(Vector3 currentPosition)
         {
-            IEnumerable<SpaceObject> objects = GameObject.FindObjectsOfType(aimType).OfType<SpaceObject>();
+            return currentPosition;
+            /*IEnumerable<SpaceObject> objects = GameObject.FindObjectsOfType(aimType).OfType<SpaceObject>();
             if (objects.Count() == 0)
                 return currentPosition;
 
@@ -50,7 +51,7 @@ namespace AsteroidsLibrary.Movers
 
             return Vector3.MoveTowards(currentPosition,
                                        aimPosition,
-                                       speed * Time.deltaTime);
+                                       speed * Time.deltaTime);*/
         }
 
         private void ChangeDirection(Vector3 endPosition)

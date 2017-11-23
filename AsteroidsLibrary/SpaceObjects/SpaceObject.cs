@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AsteroidsLibrary.SpaceObjects
 {
-    public class SpaceObject : MonoBehaviour
+    public class SpaceObject
     {
         public delegate void SpaceObjectDestroyed(int score);
         public event SpaceObjectDestroyed SpaceObjectDestroyedEvent;
@@ -13,41 +13,14 @@ namespace AsteroidsLibrary.SpaceObjects
         public delegate void PositionChanged(Vector3 position);
         public event PositionChanged PositionChangedEvent;
 
-        protected virtual void Explode()
+        public void OnSpaceObjectDestroyed(int score)
         {
-            // TODO: show explode
-            Destroy(gameObject);
+            SpaceObjectDestroyedEvent?.Invoke(score);
         }
 
-        protected virtual void OnTriggerEnter2D(Collider2D collider)
+        public virtual void OnPositionChanged(Vector3 position)
         {
-            // TODO: place for improvement
-            if (collider.transform.parent != null && collider.transform.parent.parent != null)
-            {
-                var colliderParent = collider.transform.parent.parent;
-                if (colliderParent.tag == "Weapon" || colliderParent.tag == "Player")
-                {
-                    Explode();
-                }
-            }
-        }
-
-        protected virtual void OnSpaceObjectDestroyed(int score)
-        {
-            SpaceObjectDestroyed handler = SpaceObjectDestroyedEvent;
-            if (handler != null)
-            {
-                handler(score);
-            }
-        }
-
-        protected virtual void OnPositionChanged(Vector3 position)
-        {
-            PositionChanged handler = PositionChangedEvent;
-            if (handler != null)
-            {
-                handler(position);
-            }
+            PositionChangedEvent?.Invoke(position);
         }
     }
 }

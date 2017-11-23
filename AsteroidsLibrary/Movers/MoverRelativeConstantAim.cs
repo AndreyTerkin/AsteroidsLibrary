@@ -20,7 +20,7 @@ namespace AsteroidsLibrary.Movers
         {
             this.speed = speed;
 
-            if (aim)
+            if (aim != null)
                 aim.PositionChangedEvent += ChangeDirection;
         }
 
