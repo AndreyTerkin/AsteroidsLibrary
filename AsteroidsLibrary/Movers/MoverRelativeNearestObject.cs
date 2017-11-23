@@ -28,6 +28,7 @@ namespace AsteroidsLibrary.Movers
         public Vector3 UpdatePosition(Vector3 currentPosition)
         {
             return currentPosition;
+
             /*IEnumerable<SpaceObject> objects = GameObject.FindObjectsOfType(aimType).OfType<SpaceObject>();
             if (objects.Count() == 0)
                 return currentPosition;
@@ -54,9 +55,9 @@ namespace AsteroidsLibrary.Movers
                                        speed * Time.deltaTime);*/
         }
 
-        private void ChangeDirection(Vector3 endPosition)
+        private void ChangeDirection(object sender, SpaceObjectPositionChangedEventArgs e)
         {
-            aimPosition = endPosition;
+            aimPosition = e.Position;
         }
     }
 }

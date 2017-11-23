@@ -1,26 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace AsteroidsLibrary.SpaceObjects
 {
     public class SpaceObject
     {
-        public delegate void SpaceObjectDestroyed(int score);
+        public delegate void SpaceObjectDestroyed(object sender, SpaceObjectDestroyedEventArgs e);
         public event SpaceObjectDestroyed SpaceObjectDestroyedEvent;
 
-        public delegate void PositionChanged(Vector3 position);
+        public delegate void PositionChanged(object sender, SpaceObjectPositionChangedEventArgs e);
         public event PositionChanged PositionChangedEvent;
 
-        public void OnSpaceObjectDestroyed(int score)
+        public void OnSpaceObjectDestroyed(object sender, int score)
         {
-            SpaceObjectDestroyedEvent?.Invoke(score);
+            SpaceObjectDestroyedEvent?.Invoke(sender != null ? sender : this,
+                new SpaceObjectDestroyedEventArgs(score));
         }
 
-        public virtual void OnPositionChanged(Vector3 position)
+        public virtual void OnPositionChanged(object sender, Vector3 position)
         {
-            PositionChangedEvent?.Invoke(position);
+            PositionChangedEvent?.Invoke(sender != null ? sender : this,
+                new SpaceObjectPositionChangedEventArgs(position));
         }
     }
 }

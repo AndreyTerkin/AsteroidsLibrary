@@ -31,9 +31,9 @@ namespace AsteroidsLibrary.Movers
                                        speed * Time.deltaTime);
         }
 
-        private void ChangeDirection(Vector3 endPosition)
+        private void ChangeDirection(object sender, SpaceObjectPositionChangedEventArgs e)
         {
-            aimPosition = endPosition;
+            aimPosition = e.Position;
         }
     }
 }
