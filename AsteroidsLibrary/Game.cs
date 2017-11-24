@@ -43,16 +43,19 @@ namespace AsteroidsLibrary
 
         private Random random;
 
-        public Game()
+        private static Game instance;
+
+        private Game()
         {
-            waveNum = 1;
-            enemiesPerWave = 10;
-            score = 0;
-
-            ufoCount = 0;
-            asteroidCount = 0;
-
+            ResetOptions();
             random = new Random();
+        }
+
+        public static Game GetInstance()
+        {
+            if (instance == null)
+                instance = new Game();
+            return instance;
         }
 
         public void StartSpawnObjects()
@@ -104,8 +107,19 @@ namespace AsteroidsLibrary
 
         public void StopGame()
         {
+            ResetOptions();
             ufoTimer.Dispose();
             asteroidTimer.Dispose();
+        }
+
+        private void ResetOptions()
+        {
+            waveNum = 1;
+            enemiesPerWave = 10;
+            score = 0;
+
+            ufoCount = 0;
+            asteroidCount = 0;
         }
     }
 }
