@@ -22,6 +22,10 @@ namespace AsteroidsLibrary
         public delegate void SpaceObjectSpawned(object sender, SpaceObjectSpawnEventArgs e);
         public event SpaceObjectSpawned SpaceObjectSpawnEvent;
 
+        // for debug
+        public delegate void MessageDelegate(string text);
+        public event MessageDelegate MessageDelegateEvent;
+
         private int waveNum;
         private int enemiesPerWave;
         private int score;
@@ -54,10 +58,9 @@ namespace AsteroidsLibrary
         public void StartSpawnObjects()
         {
             // TODO: Learn more about it
-            // https://habrahabr.ru/post/232169/
             SynchronizationContext mainContext = SynchronizationContext.Current;
-            ufoTimer = new Timer(SpawnUfo, mainContext, 0, Timeout.Infinite);
-            asteroidTimer = new Timer(SpawnAsteroid, mainContext, 0, Timeout.Infinite);
+            asteroidTimer = new Timer(SpawnAsteroid, mainContext, 10, Timeout.Infinite);
+            ufoTimer = new Timer(SpawnUfo, mainContext, 10, Timeout.Infinite);
         }
 
         private void SpawnUfo(object state)
@@ -71,7 +74,6 @@ namespace AsteroidsLibrary
             SynchronizationContext mainContext = state as SynchronizationContext;
             mainContext.Send(SpawnSignal, SpaceObjectTypes.Ufo);
             ufoCount++;
-
             int time = random.Next((int)(minUfoSpawnTime / waveNum),
                                    (int)(maxUfoSpawnTime / waveNum));
             ufoTimer.Change(time, time);
@@ -103,6 +105,7 @@ namespace AsteroidsLibrary
         public void StopGame()
         {
             ufoTimer.Dispose();
+            asteroidTimer.Dispose();
         }
     }
 }
