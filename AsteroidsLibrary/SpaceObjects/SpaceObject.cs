@@ -3,6 +3,14 @@ using UnityEngine;
 
 namespace AsteroidsLibrary.SpaceObjects
 {
+    public enum SpaceObjectTypes
+    {
+        Player,
+        Asteroid,
+        AsteroidFragment,
+        Ufo
+    }
+
     public class SpaceObject
     {
         public delegate void SpaceObjectDestroyed(object sender, SpaceObjectDestroyedEventArgs e);
