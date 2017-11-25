@@ -70,8 +70,8 @@ namespace AsteroidsLibrary
                 default:
                     return null;
             }
-            Game.GetInstance().ObjectMap[type].Add(spaceObject); // TODO: do object remove after it killed on scene? No
-            spaceObject.SpaceObjectDestroyedEvent += Game.GetInstance().UpdateScore; // TODO: unsubscribe before delete
+            Game.GetInstance().ObjectMap[type].Add(spaceObject);
+            spaceObject.SpaceObjectDestroyedEvent += Game.GetInstance().UpdateScore;
             return spaceObject;
         }
 

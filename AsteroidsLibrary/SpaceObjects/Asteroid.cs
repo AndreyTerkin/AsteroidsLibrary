@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AsteroidsLibrary.SpaceObjects
 {
-    class Asteroid : SpaceObject
+    public class Asteroid : SpaceObject
     {
         public static float minAsteroidSpawnTime = 1000.0f;
         public static float maxAsteroidSpawnTime = 5000.0f;

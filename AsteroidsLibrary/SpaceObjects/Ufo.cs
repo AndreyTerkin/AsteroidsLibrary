@@ -5,7 +5,7 @@ using AsteroidsLibrary.Movers;
 
 namespace AsteroidsLibrary.SpaceObjects
 {
-    class Ufo : SpaceObject
+    public class Ufo : SpaceObject
     {
         public static float minUfoSpawnTime = 4000.0f;
         public static float maxUfoSpawnTime = 12000.0f;

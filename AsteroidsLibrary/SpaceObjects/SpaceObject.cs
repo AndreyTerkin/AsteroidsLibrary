@@ -18,10 +18,6 @@ namespace AsteroidsLibrary.SpaceObjects
 
         public IMovable Mover { get; set; }
 
-        // TODO: temporary hack!!!
-        public SpaceObject()
-        { }
-
         public SpaceObject(SpaceObjectTypes type, SpaceObjectAttributes attributes)
         {
             Type = type;
@@ -32,6 +28,7 @@ namespace AsteroidsLibrary.SpaceObjects
         {
             SpaceObjectDestroyedEvent?.Invoke(sender != null ? sender : this,
                 new SpaceObjectDestroyedEventArgs(position, score));
+            SpaceObjectDestroyedEvent -= Game.GetInstance().UpdateScore;
         }
 
         public virtual void OnPositionChanged(object sender, Vector3 position)
