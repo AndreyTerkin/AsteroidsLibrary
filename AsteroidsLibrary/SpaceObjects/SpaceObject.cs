@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+using AsteroidsLibrary.Movers;
+
 namespace AsteroidsLibrary.SpaceObjects
 {
     public class SpaceObject
@@ -13,6 +15,8 @@ namespace AsteroidsLibrary.SpaceObjects
 
         public SpaceObjectTypes Type { get; set; }
         public SpaceObjectAttributes Attributes { get; set; }
+
+        public IMovable Mover { get; set; }
 
         // TODO: temporary hack!!!
         public SpaceObject()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 using AsteroidsLibrary.SpaceObjects;
 
@@ -17,7 +18,7 @@ namespace AsteroidsLibrary
         public static void SpawnBehindBorder(
             SpaceObjectTypes type, Border border)
         {
-            var attributes = Game.GetInstance().SpaceObjectMap[type];
+            var attributes = Game.GetInstance().SpaceObjectAttributesMap[type];
             Vector3 position = Vector3.zero;
             Vector2 direction = new Vector2(1.0f, 1.0f);
             InitSpawnParameters(
@@ -36,7 +37,7 @@ namespace AsteroidsLibrary
         /// <param name="position"></param>
         public static void SpawnOnPosition(SpaceObjectTypes type, Vector3 position)
         {
-            var attributes = Game.GetInstance().SpaceObjectMap[type];
+            var attributes = Game.GetInstance().SpaceObjectAttributesMap[type];
             Vector2 direction = new Vector2(
                 Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
 
@@ -49,17 +50,27 @@ namespace AsteroidsLibrary
         private static SpaceObject CreateSpaceObjectOfType(
             SpaceObjectTypes type, SpaceObjectAttributes attributes)
         {
+            SpaceObject spaceObject;
+
             switch (type)
             {
+                case SpaceObjectTypes.Player:
+                    spaceObject = new Player(type, attributes);
+                    break;
                 case SpaceObjectTypes.Asteroid:
-                    return new Asteroid(type, attributes);
+                    spaceObject = new Asteroid(type, attributes);
+                    break;
                 case SpaceObjectTypes.AsteroidFragment:
-                    return new SpaceObject(type, attributes);
+                    spaceObject = new SpaceObject(type, attributes);
+                    break;
                 case SpaceObjectTypes.Ufo:
-                    return new SpaceObject(type, attributes);
+                    spaceObject = new Ufo(type, attributes);
+                    break;
                 default:
                     return null;
             }
+            Game.GetInstance().ObjectMap[type].Add(spaceObject);
+            return spaceObject;
         }
 
         private static void InitSpawnParameters(Border border, Vector2 size, ref Vector3 position, ref Vector2 direction)
