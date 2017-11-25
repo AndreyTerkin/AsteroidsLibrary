@@ -56,6 +56,7 @@ namespace AsteroidsLibrary
             {
                 case SpaceObjectTypes.Player:
                     spaceObject = new Player(type, attributes);
+                    spaceObject.SpaceObjectDestroyedEvent += Game.GetInstance().GameOver;
                     break;
                 case SpaceObjectTypes.Asteroid:
                     spaceObject = new Asteroid(type, attributes);
@@ -69,7 +70,8 @@ namespace AsteroidsLibrary
                 default:
                     return null;
             }
-            Game.GetInstance().ObjectMap[type].Add(spaceObject);
+            Game.GetInstance().ObjectMap[type].Add(spaceObject); // TODO: do object remove after it killed on scene? No
+            spaceObject.SpaceObjectDestroyedEvent += Game.GetInstance().UpdateScore; // TODO: unsubscribe before delete
             return spaceObject;
         }
 

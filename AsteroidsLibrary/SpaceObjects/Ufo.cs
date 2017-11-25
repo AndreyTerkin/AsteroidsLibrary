@@ -16,7 +16,7 @@ namespace AsteroidsLibrary.SpaceObjects
             var playerList = Game.GetInstance().ObjectMap[SpaceObjectTypes.Player];
             if (playerList.Count == 1)
             {
-                Mover = new MoverRelativeConstantAim(playerList[0], 2.0f);
+                Mover = new MoverRelativeConstantAim(playerList[0], Attributes.Speed);
             }
         }
     }

@@ -51,7 +51,7 @@ namespace AsteroidsLibrary.SpaceObjects
 
     public struct SpaceObjectAttributes
     {
-        public SpaceObjectAttributes(Vector2 size, Vector3 position, float speed, int scoreForDestroy)
+        public SpaceObjectAttributes(Vector2 size, float speed, int scoreForDestroy)
         {
             Size = size;
             Speed = speed;

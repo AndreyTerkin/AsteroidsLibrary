@@ -8,6 +8,11 @@ namespace AsteroidsLibrary
 {
     public class Game
     {
+        public delegate void ScoreUpdate(int score);
+        public event ScoreUpdate ScoreUpdateEvent;
+
+        public event Action GameOverEvent;
+
         // for debug
         public delegate void MessageDelegate(string text);
         public event MessageDelegate MessageDelegateEvent;
@@ -50,7 +55,7 @@ namespace AsteroidsLibrary
         public void AddUnit(SpaceObjectTypes type, Vector2 size, float speed, int scoreForDestroy)
         {
             SpaceObjectAttributesMap.Add(type,
-                new SpaceObjectAttributes(size, Vector3.zero, speed, scoreForDestroy));
+                new SpaceObjectAttributes(size, speed, scoreForDestroy));
         }
 
         public SpaceObjectAttributes GetUnitOfType(SpaceObjectTypes type)
@@ -63,6 +68,21 @@ namespace AsteroidsLibrary
             ResetOptions();
             ufoSpawnTimer.Dispose();
             asteroidSpawnTimer.Dispose();
+        }
+
+        public void GameOver(object sender, SpaceObjectDestroyedEventArgs e)
+        {
+            GameOverEvent();
+            StopGame();
+        }
+
+        public void UpdateScore(object sender, SpaceObjectDestroyedEventArgs e)
+        {
+            if (e != null)
+            {
+                score += e.ScoresForDestroy;
+                ScoreUpdateEvent?.Invoke(score);
+            }
         }
 
         public void StartSpawnObjects()
@@ -117,11 +137,13 @@ namespace AsteroidsLibrary
         {
             SpaceObjectAttributesMap = new Dictionary<SpaceObjectTypes, SpaceObjectAttributes>();
 
-            ObjectMap = new Dictionary<SpaceObjectTypes, List<SpaceObject>>();
-            ObjectMap.Add(SpaceObjectTypes.Player, new List<SpaceObject>());
-            ObjectMap.Add(SpaceObjectTypes.Asteroid, new List<SpaceObject>());
-            ObjectMap.Add(SpaceObjectTypes.AsteroidFragment, new List<SpaceObject>());
-            ObjectMap.Add(SpaceObjectTypes.Ufo, new List<SpaceObject>());
+            ObjectMap = new Dictionary<SpaceObjectTypes, List<SpaceObject>>
+            {
+                { SpaceObjectTypes.Player, new List<SpaceObject>() },
+                { SpaceObjectTypes.Asteroid, new List<SpaceObject>() },
+                { SpaceObjectTypes.AsteroidFragment, new List<SpaceObject>() },
+                { SpaceObjectTypes.Ufo, new List<SpaceObject>() }
+            };
 
             waveNum = 1;
             enemiesPerWave = 10;
@@ -130,14 +152,5 @@ namespace AsteroidsLibrary
             ufoCount = 0;
             asteroidCount = 0;
         }
-    }
-
-    [System.Serializable]
-    public struct Border
-    {
-        public float xMin;
-        public float xMax;
-        public float yMin;
-        public float yMax;
     }
 }
