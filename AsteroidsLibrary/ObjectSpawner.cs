@@ -1,31 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace AsteroidsLibrary.SpaceObjects.Factory
+namespace AsteroidsLibrary
 {
-    public struct Border
+    public class ObjectSpawner
     {
-        public float xMin;
-        public float xMax;
-        public float yMin;
-        public float yMax;
-    }
-
-    public class SpaceObjectFactory
-    {
-        private Border border;
-
-        public SpaceObjectFactory(float xMin, float xMax, float yMin, float yMax)
-        {
-            border.xMin = xMin;
-            border.xMax = xMax;
-            border.yMin = yMin;
-            border.yMax = yMax;
-        }
-
-        public void InitSpawnParameters(Vector2 size, ref Vector3 position, ref Vector2 direction)
+        public static void InitSpawnParameters(Border border, Vector2 size, ref Vector3 position, ref Vector2 direction)
         {
             float deflection = Random.Range(-1.0f, 1.0f);
             int side = Random.Range(0, 4);
