@@ -6,27 +6,21 @@ namespace AsteroidsLibrary
 {
     public class SpaceObjectSpawnEventArgs
     {
-        public SpaceObjectTypes ObjectType { get; protected set; }
-        public SpaceObjectAttributes Attributes { get; protected set; }
+        public SpaceObject Object { get; protected set; }
         public Vector3 Position { get; protected set; }
         public Vector2 Direction { get; protected set; }
 
-        public SpaceObjectSpawnEventArgs(
-            SpaceObjectTypes objectType,
-            SpaceObjectAttributes attributes)
+        public SpaceObjectSpawnEventArgs(SpaceObject spaceObject)
         {
-            ObjectType = objectType;
-            Attributes = attributes;
+            Object = spaceObject;
         }
 
         public SpaceObjectSpawnEventArgs(
-            SpaceObjectTypes objectType,
-            SpaceObjectAttributes attributes,
+            SpaceObject spaceObject,
             Vector3 position,
             Vector2 direction)
         {
-            ObjectType = objectType;
-            Attributes = attributes;
+            Object = spaceObject;
             Position = position;
             Direction = direction;
         }

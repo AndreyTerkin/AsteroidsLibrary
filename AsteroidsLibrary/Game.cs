@@ -8,16 +8,13 @@ namespace AsteroidsLibrary
 {
     public class Game
     {
-        public delegate void SpaceObjectSpawned(object sender, SpaceObjectSpawnEventArgs e);
-        public event SpaceObjectSpawned SpaceObjectSpawnEvent;
-
         // for debug
         public delegate void MessageDelegate(string text);
         public event MessageDelegate MessageDelegateEvent;
 
-        private Border border;
-        private Dictionary<SpaceObjectTypes, SpaceObjectAttributes> spaceObjectMap;
+        public Dictionary<SpaceObjectTypes, SpaceObjectAttributes> SpaceObjectMap { get; set; }
 
+        private Border border;
         private int waveNum;
         private int enemiesPerWave;
         private int score;
@@ -50,22 +47,20 @@ namespace AsteroidsLibrary
             return instance;
         }
 
+        public void SetBorders(Border border)
+        {
+            this.border = border;
+        }
+
         public void AddUnit(SpaceObjectTypes type, Vector2 size, float speed, int scoreForDestroy)
         {
-            spaceObjectMap.Add(type,
+            SpaceObjectMap.Add(type,
                 new SpaceObjectAttributes(size, Vector3.zero, speed, scoreForDestroy));
         }
 
         public SpaceObjectAttributes GetUnitOfType(SpaceObjectTypes type)
         {
-            return spaceObjectMap[type];
-        }
-
-        public void StartSpawnObjects()
-        {
-            SynchronizationContext mainContext = SynchronizationContext.Current;
-            asteroidTimer = new Timer(SpawnAsteroid, mainContext, 10, Timeout.Infinite);
-            ufoTimer = new Timer(SpawnUfo, mainContext, 10, Timeout.Infinite);
+            return SpaceObjectMap[type];
         }
 
         public void StopGame()
@@ -75,9 +70,11 @@ namespace AsteroidsLibrary
             asteroidTimer.Dispose();
         }
 
-        public void SetBorders(Border border)
+        public void StartSpawnObjects()
         {
-            this.border = border;
+            SynchronizationContext mainContext = SynchronizationContext.Current;
+            asteroidTimer = new Timer(SpawnAsteroid, mainContext, 10, Timeout.Infinite);
+            ufoTimer = new Timer(SpawnUfo, mainContext, 10, Timeout.Infinite);
         }
 
         private void SpawnUfo(object state)
@@ -116,20 +113,12 @@ namespace AsteroidsLibrary
         private void SpawnSignal(object state)
         {
             SpaceObjectTypes type = (SpaceObjectTypes)state;
-
-            Vector3 position = Vector3.zero;
-            Vector2 direction = new Vector2(1.0f, 1.0f);
-            ObjectSpawner.InitSpawnParameters(border, spaceObjectMap[type].Size, ref position, ref direction);
-
-            var arguments = new SpaceObjectSpawnEventArgs(
-                type, spaceObjectMap[type], position, direction);
-
-            SpaceObjectSpawnEvent?.Invoke(this, arguments);
+            ObjectSpawner.SpawnBehindBorder(type, border);
         }
 
         private void ResetOptions()
         {
-            spaceObjectMap = new Dictionary<SpaceObjectTypes, SpaceObjectAttributes>();
+            SpaceObjectMap = new Dictionary<SpaceObjectTypes, SpaceObjectAttributes>();
 
             waveNum = 1;
             enemiesPerWave = 10;

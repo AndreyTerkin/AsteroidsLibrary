@@ -11,10 +11,23 @@ namespace AsteroidsLibrary.SpaceObjects
         public delegate void PositionChanged(object sender, SpaceObjectPositionChangedEventArgs e);
         public event PositionChanged PositionChangedEvent;
 
-        public void OnSpaceObjectDestroyed(object sender, int score)
+        public SpaceObjectTypes Type { get; set; }
+        public SpaceObjectAttributes Attributes { get; set; }
+
+        // TODO: temporary hack!!!
+        public SpaceObject()
+        { }
+
+        public SpaceObject(SpaceObjectTypes type, SpaceObjectAttributes attributes)
+        {
+            Type = type;
+            Attributes = attributes;
+        }
+
+        public virtual void OnSpaceObjectDestroyed(object sender, Vector3 position, int score)
         {
             SpaceObjectDestroyedEvent?.Invoke(sender != null ? sender : this,
-                new SpaceObjectDestroyedEventArgs(score));
+                new SpaceObjectDestroyedEventArgs(position, score));
         }
 
         public virtual void OnPositionChanged(object sender, Vector3 position)
