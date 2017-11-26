@@ -14,17 +14,19 @@ namespace AsteroidsLibrary.SpaceObjects
             : base(type, attributes)
         {}
 
-        public override void OnSpaceObjectDestroyed(object sender, Vector3 position, int score)
+        public override void OnSpaceObjectDestroyed(object sender, Vector3 position, SpaceObjectTypes killer)
         {
-            if (position != Vector3.zero)
+            base.OnSpaceObjectDestroyed(sender, position, killer);
+            if (killer != SpaceObjectTypes.Boundary)
             {
-                for (int i = 0; i < fragmentCount; i++)
+                if (position != Vector3.zero)
                 {
-                    ObjectSpawner.SpawnOnPosition(SpaceObjectTypes.AsteroidFragment, position);
+                    for (int i = 0; i < fragmentCount; i++)
+                    {
+                        ObjectSpawner.SpawnOnPosition(SpaceObjectTypes.AsteroidFragment, position);
+                    }
                 }
             }
-
-            base.OnSpaceObjectDestroyed(sender, position, score);
         }
     }
 }

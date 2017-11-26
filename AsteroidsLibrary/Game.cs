@@ -152,5 +152,11 @@ namespace AsteroidsLibrary
             ufoCount = 0;
             asteroidCount = 0;
         }
+
+        // Send message to sibscribed client
+        public void SendMessage(string txt)
+        {
+            MessageDelegateEvent?.Invoke(txt);
+        }
     }
 }

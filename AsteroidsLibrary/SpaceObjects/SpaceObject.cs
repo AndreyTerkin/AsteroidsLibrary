@@ -15,6 +15,7 @@ namespace AsteroidsLibrary.SpaceObjects
 
         public SpaceObjectTypes Type { get; set; }
         public SpaceObjectAttributes Attributes { get; set; }
+        public Vector3 Position { get; set; }
 
         public IMovable Mover { get; set; }
 
@@ -24,15 +25,20 @@ namespace AsteroidsLibrary.SpaceObjects
             Attributes = attributes;
         }
 
-        public virtual void OnSpaceObjectDestroyed(object sender, Vector3 position, int score)
+        public virtual void OnSpaceObjectDestroyed(object sender, Vector3 position, SpaceObjectTypes killer)
         {
-            SpaceObjectDestroyedEvent?.Invoke(sender != null ? sender : this,
-                new SpaceObjectDestroyedEventArgs(position, score));
+            if (killer != SpaceObjectTypes.Boundary)
+            {
+                SpaceObjectDestroyedEvent?.Invoke(sender != null ? sender : this,
+                    new SpaceObjectDestroyedEventArgs(position, Attributes.ScoreForDestroy));
+            }
             SpaceObjectDestroyedEvent -= Game.GetInstance().UpdateScore;
+            Game.GetInstance().ObjectMap[Type].Remove(this);
         }
 
         public virtual void OnPositionChanged(object sender, Vector3 position)
         {
+            Position = position;
             PositionChangedEvent?.Invoke(sender != null ? sender : this,
                 new SpaceObjectPositionChangedEventArgs(position));
         }
@@ -43,7 +49,8 @@ namespace AsteroidsLibrary.SpaceObjects
         Player,
         Asteroid,
         AsteroidFragment,
-        Ufo
+        Ufo,
+        Boundary
     }
 
     public struct SpaceObjectAttributes

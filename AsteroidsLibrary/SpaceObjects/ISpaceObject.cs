@@ -10,6 +10,6 @@ namespace AsteroidsLibrary.SpaceObjects
         float Speed { get; set; }
         int ScoresForDestroy { get; set; }
 
-        void Explode();
+        void Explode(SpaceObjectTypes killer);
     }
 }
