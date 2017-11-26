@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 using AsteroidsLibrary.SpaceObjects;
 
@@ -15,8 +14,10 @@ namespace AsteroidsLibrary
         /// </summary>
         /// <param name="type">Type of SpaceObject</param>
         /// <param name="border">Borders of play area</param>
-        public static void SpawnBehindBorder(
-            SpaceObjectTypes type, Border border)
+        public static SpaceObject SpawnBehindBorder(
+            SpaceObjectTypes type,
+            Border border,
+            bool notify = true)
         {
             var attributes = Game.GetInstance().SpaceObjectAttributesMap[type];
             Vector3 position = Vector3.zero;
@@ -27,7 +28,10 @@ namespace AsteroidsLibrary
             SpaceObject spaceObject = CreateSpaceObjectOfType(type, attributes);
             var arguments = new SpaceObjectSpawnEventArgs(spaceObject, position, direction);
 
-            SpaceObjectSpawnEvent?.Invoke(arguments);
+            if (notify)
+                SpaceObjectSpawnEvent?.Invoke(arguments);
+
+            return spaceObject;
         }
 
         /// <summary>
@@ -35,7 +39,10 @@ namespace AsteroidsLibrary
         /// </summary>
         /// <param name="type">Type of SpaceObject</param>
         /// <param name="position"></param>
-        public static void SpawnOnPosition(SpaceObjectTypes type, Vector3 position)
+        public static SpaceObject SpawnOnPosition(
+            SpaceObjectTypes type,
+            Vector3 position,
+            bool notify = true)
         {
             var attributes = Game.GetInstance().SpaceObjectAttributesMap[type];
             Vector2 direction = new Vector2(
@@ -44,7 +51,10 @@ namespace AsteroidsLibrary
             SpaceObject spaceObject = CreateSpaceObjectOfType(type, attributes);
             var arguments = new SpaceObjectSpawnEventArgs(spaceObject, position, direction);
 
-            SpaceObjectSpawnEvent?.Invoke(arguments);
+            if (notify)
+                SpaceObjectSpawnEvent?.Invoke(arguments);
+
+            return spaceObject;
         }
 
         private static SpaceObject CreateSpaceObjectOfType(
@@ -67,6 +77,9 @@ namespace AsteroidsLibrary
                 case SpaceObjectTypes.Ufo:
                     spaceObject = new Ufo(type, attributes);
                     break;
+                case SpaceObjectTypes.Bullet:
+                case SpaceObjectTypes.Laser:
+                    return new SpaceObject(type, attributes);
                 default:
                     return null;
             }

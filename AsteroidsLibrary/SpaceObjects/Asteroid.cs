@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AsteroidsLibrary.SpaceObjects
 {
@@ -14,17 +13,14 @@ namespace AsteroidsLibrary.SpaceObjects
             : base(type, attributes)
         {}
 
-        public override void OnSpaceObjectDestroyed(object sender, Vector3 position, SpaceObjectTypes killer)
+        public override void OnSpaceObjectDestroyed(object sender, Vector3 position, SpaceObject killer)
         {
             base.OnSpaceObjectDestroyed(sender, position, killer);
-            if (killer != SpaceObjectTypes.Boundary)
+            if (killer != null)
             {
-                if (position != Vector3.zero)
+                for (int i = 0; i < fragmentCount; i++)
                 {
-                    for (int i = 0; i < fragmentCount; i++)
-                    {
-                        ObjectSpawner.SpawnOnPosition(SpaceObjectTypes.AsteroidFragment, position);
-                    }
+                    ObjectSpawner.SpawnOnPosition(SpaceObjectTypes.AsteroidFragment, position);
                 }
             }
         }

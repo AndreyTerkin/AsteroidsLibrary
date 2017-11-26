@@ -9,7 +9,7 @@ namespace AsteroidsLibrary.SpaceObjects
             : base(type, attributes)
         { }
 
-        public override void OnSpaceObjectDestroyed(object sender, Vector3 position, SpaceObjectTypes killer)
+        public override void OnSpaceObjectDestroyed(object sender, Vector3 position, SpaceObject killer)
         {
             base.OnSpaceObjectDestroyed(sender, position, killer);
             SpaceObjectDestroyedEvent -= Game.GetInstance().GameOver;
