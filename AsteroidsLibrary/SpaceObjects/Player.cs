@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AsteroidsLibrary.SpaceObjects
 {
-    public class Player : SpaceObject
+    public class Player : SpaceObject, IFiring
     {
         public Player(SpaceObjectTypes type, SpaceObjectAttributes attributes)
             : base(type, attributes)
@@ -13,6 +13,12 @@ namespace AsteroidsLibrary.SpaceObjects
         {
             base.OnSpaceObjectDestroyed(sender, position, killer);
             SpaceObjectDestroyedEvent -= Game.GetInstance().GameOver;
+        }
+
+        // IFiring
+        public SpaceObject Shoot(SpaceObjectTypes type, Vector3 position)
+        {
+            return ObjectSpawner.SpawnOnPosition(SpaceObjectTypes.Bullet, position, false);
         }
     }
 }
